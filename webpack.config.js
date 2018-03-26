@@ -1,6 +1,7 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const CopyWebPackPlugin = require('copy-webpack-plugin');
 
 const extractSass = new ExtractTextPlugin({
     filename: "[name].css",
@@ -57,6 +58,16 @@ module.exports = {
                     fallback: "style-loader"
                 })
             },
+            {
+                test: /\.(jpg|png|jpeg|gif)$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                        }
+                    }
+                ]
+            }
         ]
     },
     plugins: [
@@ -69,6 +80,12 @@ module.exports = {
             host:'localhost',
             port: 3000,
             server: { baseDir: ['app/dist'] }
-        })
+        }),
+        new CopyWebPackPlugin([
+            {
+                from: 'src/public/img',
+                to:'img'
+            }
+        ])
     ],
 };
